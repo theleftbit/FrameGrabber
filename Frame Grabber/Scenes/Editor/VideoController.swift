@@ -106,7 +106,11 @@ class VideoController {
         case .photoLibrary(let asset):
             loadPhotoLibraryPreviewImage(for: asset, with: size, completionHandler: completionHandler)
             
-        case .url, .camera:
+        case .url(let url):
+            guard url.isFileURL else { return }
+            assert(video != nil)
+            generateVideoPreviewImage(for: video!, with: size, completionHandler: completionHandler)
+        case .camera:
             assert(video != nil)
             generateVideoPreviewImage(for: video!, with: size, completionHandler: completionHandler)
         }
@@ -137,6 +141,7 @@ class VideoController {
         with size: CGSize,
         completionHandler: @escaping (UIImage?) -> ()
     ) {
+        
         let sourceTime = [NSValue(time: .zero)]
         let imageGenerator = AVAssetImageGenerator(asset: video)
         self.imageGenerator = imageGenerator
