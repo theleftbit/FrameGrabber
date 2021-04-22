@@ -10,9 +10,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let fileManager = FileManager.default
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = {
+            let storyboard = UIStoryboard(name: "Editor", bundle: nil)
+            let videoController = VideoController(source: .url(URL.init(string: "http://www.exit109.com/~dnn/clips/RW20seconds_2.mp4")!), previewImage: nil)
+            
+            guard let controller = storyboard.instantiateInitialViewController(creator: {
+                EditorViewController(videoController: videoController, delegate: nil, coder: $0)
+            }) else { fatalError("Could not instantiate controller.") }
+            return UINavigationController.init(rootViewController: controller)
+        }()
+        self.window?.makeKeyAndVisible()
+        
         configureInAppPurchases()
         Style.configureAppearance(for: window)
-        configureCoordinator()
+//        configureCoordinator()
         
         if launchOptions?[.url] == nil {
             try? fileManager.clearTemporaryDirectories()

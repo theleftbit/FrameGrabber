@@ -28,7 +28,7 @@ struct ViewControllerFactory {
     ) -> EditorViewController {
         
         let storyboard = UIStoryboard(name: "Editor", bundle: nil)
-        let videoController = VideoController(source: .url(URL.init(string: "http://www.exit109.com/~dnn/clips/RW20seconds_2.mp4")!), previewImage: previewImage)
+        let videoController = VideoController(source: .url(URL.init(string: "http://www.exit109.com/~dnn/clips/RW20seconds_2.mp4")!), previewImage: nil)
         
         guard let controller = storyboard.instantiateInitialViewController(creator: {
             EditorViewController(videoController: videoController, delegate: delegate, coder: $0)
